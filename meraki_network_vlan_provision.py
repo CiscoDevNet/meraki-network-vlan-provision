@@ -159,11 +159,11 @@ def delete_networks(org):
             for network in networks:
                 if network["name"] == row["Network Name"]:
                     network = network["id"] 
-                    devices = dashboard.networks.getNetworkDevices(network["id"])
+                    devices = dashboard.networks.getNetworkDevices(network)
                     for device in devices:
                         device_actions.append(
                         {
-                            'resource': '/networks/' + network['id'] + '/devices',
+                            'resource': '/networks/' + network + '/devices',
                             'operation': 'remove',
                             'body': {
                                 'serial': device["serial"]
@@ -173,7 +173,7 @@ def delete_networks(org):
 
                     network_actions.append(
                         {
-                            'resource': '/networks/' + network['id'],
+                            'resource': '/networks/' + network,
                             'operation': 'destroy'
                         })
 
