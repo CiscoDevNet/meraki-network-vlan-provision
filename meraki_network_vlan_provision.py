@@ -130,7 +130,7 @@ def get_org_by_choice():
     for org in orgs:
         print(org["name"])
 
-    org_friendly_name = input("Enter the Organization these networks will be created in: ")
+    org_friendly_name = input("Enter the Organization: ")
 
     for org in orgs:     
         if org["name"] == org_friendly_name:
@@ -147,24 +147,35 @@ def delete_networks(org):
     
     device_actions=[]
     network_actions=[]
-    for network in networks:
-        devices = dashboard.networks.getNetworkDevices(network["id"])
-        for device in devices:
-            device_actions.append(
-            {
-                'resource': '/networks/' + network['id'] + '/devices',
-                'operation': 'remove',
-                'body': {
-                    'serial': device["serial"]
-                }
-            })
+    with open('meraki_config.csv', mode='r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        header = True
+
+        for row in csv_reader:
+            if header:
+                print(f'Column names are {", ".join(row)}')
+                header = False
+ 
+            for network in networks:
+                if network["name"] == row["Network Name"]:
+                    network = network["id"] 
+                    devices = dashboard.networks.getNetworkDevices(network["id"])
+                    for device in devices:
+                        device_actions.append(
+                        {
+                            'resource': '/networks/' + network['id'] + '/devices',
+                            'operation': 'remove',
+                            'body': {
+                                'serial': device["serial"]
+                            }
+                        })
 
 
-        network_actions.append(
-            {
-                'resource': '/networks/' + network['id'],
-                'operation': 'destroy'
-            })
+                    network_actions.append(
+                        {
+                            'resource': '/networks/' + network['id'],
+                            'operation': 'destroy'
+                        })
 
     if len(device_actions) > 0:
         batch = dashboard.organizations.createOrganizationActionBatch(org,device_actions,confirmed=True,synchronous=False)
