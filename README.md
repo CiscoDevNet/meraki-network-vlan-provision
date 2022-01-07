@@ -8,7 +8,7 @@ Python script that creates networks, adds devices, and creates vlans in Meraki b
 
 ## To run
 
-Data is read from meraki_config.csv.  Columns are delimited with comma and devices are delimited with semi-colon.  VLAN_subnet column allows you to dictate the IP address space the VLANs will be created in.  Those VLANS will be created incrementally and reference back to the MX assigned to the network. **NOTE** to add vlans an MX MUST be assigned to the network.  If the network does not include an MX device, set the Number_VLANS to 0 for that row.  Once the meraki_config.csv file is complete and the virutal environment is created:
+Data is read from meraki_config.csv.  Columns are delimited with comma and devices are delimited with semi-colon.  VLAN_subnet column allows you to dictate the IP address space the VLANs will be created in.  Those VLANS will be created incrementally and reference back to the MX assigned to the network. **NOTE** to add vlans an MX MUST be assigned to the network.  If the network does not include an MX device, set the Number_VLANS to 0 for that row.  Once the meraki_config.csv file is complete and the virtual environment is created:
 
 ### How to run the script:
 
